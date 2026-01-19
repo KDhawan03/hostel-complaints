@@ -41,6 +41,7 @@ const Signup = () => {
             setEmail("");
             setPassword("");
             setConfirmPassword("");
+            router.push('/login');
           } else {
             alert(data.error);
           }
