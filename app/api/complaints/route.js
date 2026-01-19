@@ -7,6 +7,7 @@ export async function POST(req) {
         const userId = req.headers.get("userId");
         //todo add image also
         const {title, description, category} = body;
+        //todo add room no hostel too here and in schema too
         if(!userId) {
             return Response.json({error: "unauthorized"}, {status:401})
         }
