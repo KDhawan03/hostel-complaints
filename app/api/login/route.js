@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import bcrypt from 'bcrypt';
 
 export async function POST(req) {
     try {
@@ -11,7 +12,7 @@ export async function POST(req) {
 
         if(!isPassValid) return Response.json({error: "Invalid email or password"}, {status: 401});
 
-        return Response.json({success: true}, {status:200}, {id:user.id, name:user.name, role:user.role})
+        return Response.json({success: true, id:existingUser.id, name:existingUser.name, role:existingUser.role}, {status:200})
 
     } catch (error) {
         return Response.json({ error: "Internal Server Error" }, { status: 500 });
