@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { storeUser } from '@/lib/auth';
+import Navbar from '../components/Navbar';
 
 function LoginPage() {
     const [email, setEmail] = useState("");
@@ -38,6 +39,8 @@ function LoginPage() {
     }
 
   return (
+    <>
+    <Navbar />
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <form onSubmit={handleLogin} className="w-96 bg-white p-8 rounded-xl shadow-md border border-gray-100">
         
@@ -82,6 +85,7 @@ function LoginPage() {
         </p>
       </form>
     </div>
+    </>
   )
 }
 

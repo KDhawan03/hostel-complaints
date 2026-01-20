@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import Navbar from '../components/Navbar';
 
 const Signup = () => {
     const [name, setName] = useState("");
@@ -53,6 +54,8 @@ const Signup = () => {
     }
 
   return (
+    <>
+    <Navbar />
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md bg-white p-8 rounded-xl shadow-lg border border-gray-100">
             <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">Create an Account</h2>
@@ -109,6 +112,7 @@ const Signup = () => {
             </p>
         </form>
     </div>
+    </>
   )
 }
 

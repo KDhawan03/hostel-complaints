@@ -25,3 +25,11 @@ export async function POST(req) {
         return Response.json({error:"Internal server error"}, {status:500})
     }
 }
+
+export async function GET() {
+    try {
+        const data = await prisma.find
+    } catch (error) {
+        
+    }
+}
