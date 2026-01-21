@@ -46,6 +46,7 @@ function NewComplaint() {
             <label className="block text-sm font-semibold text-gray-700 mb-2">What is the issue?</label>
             <input 
               type="text"
+              maxLength={75}
               placeholder="e.g. Water leakage in Room 302"
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black"
               onChange={(e) => setFormData({...formData, title: e.target.value})}
@@ -64,7 +65,7 @@ function NewComplaint() {
               <option>PLUMBING</option>
               <option>CIVIL</option>
               <option>MESS</option>
-              <option>Other</option>
+              <option>OTHER</option>
             </select>
           </div>
 
@@ -82,12 +83,6 @@ function NewComplaint() {
           </div>
 
           {/* Hostel & room no*/}
-
-
-
-          {/* todo later add block too */}
-
-
 
         <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2" >Hostel</label>
@@ -111,23 +106,20 @@ function NewComplaint() {
             </select>
         </div>
 
-        {formData.category !== 'MESS' && (
-            <>
+        <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Room No</label>
+            <input 
+            type="text"
+            placeholder="e.g. E-511"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black"
+            onChange={(e) => setFormData({...formData, roomNo: e.target.value})}
+            required
+            />
+        </div>
 
-                <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Room No</label>
-                    <input 
-                    type="text"
-                    placeholder="e.g. E-511"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black"
-                    onChange={(e) => setFormData({...formData, roomNo: e.target.value})}
-                    required
-                    />
-                </div>
 
-            </>
-            
-        )}
+          {/* todo later add block too */}
+
 
           {/* Drag & Drop Box */}
           <div>

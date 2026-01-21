@@ -26,10 +26,49 @@ export async function POST(req) {
     }
 }
 
-export async function GET() {
+export async function GET(req) {
     try {
-        const data = await prisma.find
+      const { searchParams } = new URL(req.url);
+  
+      const page = Number(searchParams.get("page")) || 1;
+      const limit = Number(searchParams.get("limit")) || 10;
+  
+      const skip = (page - 1) * limit;
+  
+      const complaints = await prisma.complaint.findMany({
+        skip,
+        take: limit,
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+  
+      const total = await prisma.complaint.count();
+  
+      return Response.json(
+        {
+          data: complaints,
+          pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+          },
+        },
+        { status: 200 }
+      );
     } catch (error) {
-        
+      console.error(error);
+      return Response.json(
+        { error: "Failed to fetch complaints" },
+        { status: 500 }
+      );
     }
-}
+  }
