@@ -41,7 +41,7 @@ const ComplaintCard = ({complaint}) => {
             </div>
         </div>
         <div className="mt-2 text-sm text-gray-600">
-            Hostel K · Room E-511
+            Boys Hostel K · Room E-511
         </div>
         <div className="mt-1 flex items-center gap-3 border-t border-gray-100 pt-1 text-xs text-gray-400">
             <span>By <span className="font-medium text-gray-500">{user.name}</span></span>

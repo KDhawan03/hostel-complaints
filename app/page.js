@@ -1,10 +1,9 @@
-import ComplaintCard from './components/ComplaintCard';
-import FilterBar from './components/FilterBar';
+import ComplaintFeed from './components/ComplaintFeed';
 import Navbar from './components/Navbar'
 
 export default async function Home() {
   const res = await fetch(
-    "http://localhost:3000/api/complaints?page=1&limit=9",
+    "http://localhost:3000/api/complaints?page=1&limit=50",
     { cache: "no-store" }
   );
 
@@ -13,12 +12,7 @@ export default async function Home() {
   return (
     <div>
       <Navbar />
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {complaints.map((complaint) => (
-          <ComplaintCard key={complaint.id} complaint={complaint}/>
-        ))}
-      </div>
+      <ComplaintFeed initialComplaints={complaints}/>
     </div>
   );
 }
