@@ -1,8 +1,8 @@
 'use client';
 
-const ComplaintCard = ({complaint}) => {
+const ComplaintCard = ({complaint, onClick}) => {
 
-  const {title, description, category, status, user, createdAt} = complaint;
+  const {title, hostel, room, category, status, user, createdAt} = complaint;
 
 
   const statusStyles = {
@@ -21,7 +21,7 @@ const ComplaintCard = ({complaint}) => {
   };
   
   return (
-    <div className="rounded-xl border border-gray-100 bg-white p-3 shadow-sm">
+    <div onClick={onClick} className="rounded-xl border border-gray-100 bg-white p-3 shadow-sm cursor-pointer">
         <div className="flex items-start justify-between gap-3">
             {/* title */}
             <h1 className="text-lg font-semibold text-gray-900 leading-snug">{title}</h1>

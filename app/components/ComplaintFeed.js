@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import ComplaintCard from './ComplaintCard'
 import FilterBar from './FilterBar'
+import ComplaintPopUp from './ComplaintPopUp'
 
 function ComplaintFeed({initialComplaints}) {
     const [filters, setFilters] = useState({
@@ -28,7 +29,8 @@ function ComplaintFeed({initialComplaints}) {
       <>
         <FilterBar filters={filters} setFilters={setFilters} />
     
-        <div className="flex flex-col gap-4 mt-6">
+        <div className="flex flex-col gap-4 mt-6 m-10">
+        {/* <div className= " grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 m-10"> */}
           {filtered.map((complaint) => (
             <ComplaintCard 
               key={complaint.id} 
@@ -37,6 +39,9 @@ function ComplaintFeed({initialComplaints}) {
             />
           ))}
         </div>
+        {selectedComplaint && (
+          <ComplaintPopUp complaint= {selectedComplaint} onClose={() => setSelectedComplaint(null)}/>
+        )}
       </>
     );
 }
