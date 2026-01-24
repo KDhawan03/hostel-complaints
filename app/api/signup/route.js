@@ -9,6 +9,15 @@ export async function POST(req) {
       return Response.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    if(!email.endsWith("@nitjsr.ac.in")) {
+      return Response.json({error:"only NITJSR emails allowed"}, {status:400});
+    }
+
+    const passwordRegex = /^(?=.*[!@#$%^&*])(?=.{8,})/;
+    if (!passwordRegex.test(password)) {
+        return Response.json({ error: "Password too weak" }, { status: 400 });
+    }
+
     const existingUser = await prisma.user.findUnique({where:{email}});
     if(existingUser) {
         return Response.json({error: "user already exists"}, {status: 409})

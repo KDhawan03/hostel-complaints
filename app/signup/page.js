@@ -23,8 +23,23 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        
+        if(!email.endsWith("@nitjsr.ac.in")) {
+          alert("please enter official college email address only")
+          setLoading(false);
+          return;
+        }
+
+        const passwordRegex = /^(?=.*[!@#$%^&*])(?=.{8,})/;
+        if (!passwordRegex.test(password)) {
+            alert("Password must be at least 8 characters long and include a special character (!@#$%^&*).");
+            setLoading(false);
+            return;
+        }
+
         if (password !== confirmPassword) {
             alert("Passwords do not match!");
+            setLoading(false);
             return;
         }
         try {
