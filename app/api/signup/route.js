@@ -8,6 +8,13 @@ export async function POST(req) {
     if (!name || !email || !password) {
       return Response.json({ error: "Missing required fields" }, { status: 400 });
     }
+    
+    if (/\s/.test(password)) {
+      return Response.json(
+        { error: "Password cannot contain spaces" },
+        { status: 400 }
+      );
+    }
 
     if(!email.endsWith("@nitjsr.ac.in")) {
       return Response.json({error:"only NITJSR emails allowed"}, {status:400});

@@ -19,7 +19,7 @@ const Navbar = () => {
         router.push('/');
     }
   return (
-    <nav className='flex items-center justify-between px-5 w-full h-16 sticky top-0 bg-white border-b shadow-sm z-50'>
+    <nav className='flex items-center justify-between px-5 w-full h-16 sticky top-0 bg-white border-b shadow-sm'>
         <div>
             <Link href="/" className='text-3xl font-bold text-blue-500'> Hostel Complaints </Link>
         </div>

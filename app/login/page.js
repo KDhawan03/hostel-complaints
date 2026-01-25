@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { storeUser } from '@/lib/auth';
 import Navbar from '../components/Navbar';
+import { toast } from 'sonner';
 
 function LoginPage() {
     const [email, setEmail] = useState("");
@@ -14,27 +15,31 @@ function LoginPage() {
 
     const handleLogin = async(e) => {
         e.preventDefault();
+        if (!email.endsWith("@nitjsr.ac.in")) {
+          toast.error("Please use your official @nitjsr.ac.in email");
+          return;
+        }
         setLoading(true);
         try {
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body:JSON.stringify({email, password})
-            });
+          const res = await fetch('/api/login', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body:JSON.stringify({email, password})
+          });
 
-            const data = await res.json();
-            if(res.ok) {
-                storeUser(data);
-                router.push('/')
-            } else {
-                alert(data.error);
-            }
-
+          const data = await res.json();
+          if(res.ok) {
+            storeUser(data);
+            router.push('/')
+            toast.success(`Welcome back!`);
+          } else {
+            toast.error(data.error || "Invalid credentials");
+          }
         } catch (error) {
-            alert("something went wrong");
+          toast.error("Something went wrong");
+          console.log(error)
         } finally {
-            setLoading(false);
-
+          setLoading(false);
         }
     }
 
@@ -88,6 +93,4 @@ function LoginPage() {
     </>
   )
 }
-
 export default LoginPage
-

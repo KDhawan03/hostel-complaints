@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar';
+import { toast } from 'sonner';
 
 const Signup = () => {
     const [name, setName] = useState("");
@@ -10,6 +11,8 @@ const Signup = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const [errors, setErrors] = useState({});
 
     const router = useRouter();
 
@@ -23,24 +26,26 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setErrors({});
         
+        let newErrors = {};
+
         if(!email.endsWith("@nitjsr.ac.in")) {
-          alert("please enter official college email address only")
-          setLoading(false);
-          return;
+          newErrors.email = "Use your official college email id";
         }
 
         const passwordRegex = /^(?=.*[!@#$%^&*])(?=.{8,})/;
         if (!passwordRegex.test(password)) {
-            alert("Password must be at least 8 characters long and include a special character (!@#$%^&*).");
-            setLoading(false);
-            return;
+          newErrors.password = "Must be 8+ chars with a special character.";
         }
 
         if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            setLoading(false);
-            return;
+          newErrors.confirmPassword = "Passwords do not match.";
+        }
+        if (Object.keys(newErrors).length > 0) {
+          setErrors(newErrors);
+          setLoading(false);
+          return;
         }
         try {
           const res = await fetch('/api/signup', {
@@ -52,14 +57,14 @@ const Signup = () => {
           });
           const data = await res.json();
           if(res.ok) {
-            alert('signup successful');
+            toast.success('Account created! Please login.');
             setName("");
             setEmail("");
             setPassword("");
             setConfirmPassword("");
             router.push('/login');
           } else {
-            alert(data.error);
+            toast.error(data.error || "Signup failed");
           }
         } catch(error) {
           alert("something went wrong");
@@ -83,33 +88,66 @@ const Signup = () => {
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-black"
                 required
             />
+            <div>
+              <input 
+                  type='email' 
+                  placeholder='2024pgcsca070@nitjsr.ac.in' 
+                  value={email} 
+                  onChange={(e) => {setEmail(e.target.value);
+                    if(errors.email) {
+                      setErrors((prev) => {
+                        const {email, ...rest} = prev;
+                        return rest;
+                      })
+                    }
+                  }}
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:border-transparent focus:ring-2 transition text-black ${errors.email ? 'focus:ring-red-500 border-red-500' : 'focus:ring-blue-500 border-gray-300'} `}
+                  required
+              />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+            </div>
             
-            <input 
-                type='email' 
-                placeholder='2024pgcsca070@nitjsr.ac.in' 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-black"
-                required
-            />
+            <div>
+              <input 
+                  type='password' 
+                  placeholder='Password' 
+                  value={password} 
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\s/g, "");
+                    setPassword(value);
+                    if(errors.password) {
+                      setErrors((prev) => {
+                        const {password, ...rest} = prev;
+                        return rest;
+                      })
+                    }
+                  }}
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition text-black ${errors.password ? 'focus:ring-red-500 border-red-500' : 'focus:ring-blue-500 border-gray-300'}`}
+                  required
+              />
+              {errors.password && <p className='text-red-500 text-xs mt-1'>{errors.password}</p>}
+            </div>
             
-            <input 
-                type='password' 
-                placeholder='Password' 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-black"
-                required
-            />
-            
-            <input 
-                type='password' 
-                placeholder='Confirm Password' 
-                value={confirmPassword} 
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-black"
-                required
-            />
+            <div>
+              <input 
+                  type='password' 
+                  placeholder='Confirm Password' 
+                  value={confirmPassword} 
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\s/g, "");
+                    setConfirmPassword(value);
+                    if(errors.confirmPassword) {
+                      setErrors((prev) => {
+                        const {confirmPassword, ...rest} = prev;
+                        return rest;
+                      })
+                    }
+                  }}
+                  className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition text-black ${errors.confirmPassword ? 'focus:ring-red-500 border-red-500' : 'focus:ring-blue-500 border-gray-300'}`}
+                  required
+              />
+              {errors.confirmPassword && <p className="text-red-500 text-xs mt-1"> {errors.confirmPassword} </p> }
+            </div>
             
             <button 
                 type='submit' 
