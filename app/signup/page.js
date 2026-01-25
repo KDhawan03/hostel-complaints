@@ -93,7 +93,7 @@ const Signup = () => {
                   type='email' 
                   placeholder='2024pgcsca070@nitjsr.ac.in' 
                   value={email} 
-                  onChange={(e) => {setEmail(e.target.value);
+                  onChange={(e) => {setEmail(e.target.value.trim());
                     if(errors.email) {
                       setErrors((prev) => {
                         const {email, ...rest} = prev;

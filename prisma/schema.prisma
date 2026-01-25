@@ -37,8 +37,10 @@ model User {
   password  String      
   name      String      
   role      Role        @default(STUDENT)
+  isVerified Boolean  @default(false)
   complaints Complaint[]
   createdAt DateTime    @default(now())
+  otps       OTP[]
 }
 
 model Complaint {
@@ -52,4 +54,23 @@ model Complaint {
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+enum OTPType {
+  SIGNUP
+  PASSWORD_RESET
+}
+
+model OTP {
+  id        String   @id @default(cuid())
+  code      String
+  type      OTPType 
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relation to User
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  //for faster searching @@index use kra
+  @@index([userId, type])
 }

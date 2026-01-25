@@ -56,7 +56,7 @@ function LoginPage() {
           <input 
             type="email" 
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value.trim())}
             className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black"
             placeholder="2024pgcsc070a@nitjsr.ac.in"
             required
@@ -68,7 +68,7 @@ function LoginPage() {
           <input 
             type="password" 
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value.trim())}
             className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-black"
             placeholder="Enter Password"
             required
