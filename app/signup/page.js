@@ -57,17 +57,17 @@ const Signup = () => {
           });
           const data = await res.json();
           if(res.ok) {
-            toast.success('Account created! Please login.');
+            toast.success('OTP sent to your college email!');
             setName("");
             setEmail("");
             setPassword("");
             setConfirmPassword("");
-            router.push('/login');
+            router.push('/verify');
           } else {
             toast.error(data.error || "Signup failed");
           }
         } catch(error) {
-          alert("something went wrong");
+          toast.error(error.message)
         } finally {
           setLoading(false);
         }

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
+
 export async function POST(req) {
     try {
         const body = await req.json();

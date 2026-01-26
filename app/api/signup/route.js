@@ -1,4 +1,7 @@
+import generateOTP from '@/lib/otp';
 import {prisma} from '@/lib/prisma'
+// import { PrismaClient } from "@prisma/client";
+// const prisma = new PrismaClient();
 import bcrypt from 'bcrypt';
 export async function POST(req) {
   try {
@@ -27,17 +30,25 @@ export async function POST(req) {
 
     const existingUser = await prisma.user.findUnique({where:{email}});
     if(existingUser) {
-        return Response.json({error: "user already exists"}, {status: 409})
+      if(existingUser.isVerified === true) {
+        return Response.json({error: "Email already registered"}, {status: 409})
+      }
+      const newOTP = await generateOTP(existingUser.id, "SIGNUP");
+      //send otp via nodemailer
+      console.log("otp for", email, "is", newOTP.code);
+      return Response.json({message: "otp sent to your mail"}, {status:200});
     }
     const hashedPass = await bcrypt.hash(password, 10);
     
     const newUser = await prisma.user.create({
-        data: {
-          name,
-          email,
-          password: hashedPass,
-        },
-      });
+      data: {
+        name,
+        email,
+        password: hashedPass
+      },
+    });
+    const newUserOTP = await generateOTP(newUser.id, "SIGNUP");
+    console.log("OTP for NEW user", email, "is", newUserOTP.code);
     const id = newUser.id
     return Response.json({ success: true, id }, { status: 201 });
   } catch (error) {
