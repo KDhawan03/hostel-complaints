@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/prisma";
+// import { PrismaClient } from "@prisma/client";
+// const prisma = new PrismaClient();
 import bcrypt from 'bcrypt';
 
 export async function POST(req) {
@@ -11,6 +13,8 @@ export async function POST(req) {
         const isPassValid = await bcrypt.compare(password, existingUser.password);
 
         if(!isPassValid) return Response.json({error: "Invalid email or password"}, {status: 401});
+
+        if(!existingUser.isVerified) return Response.json({error: "Invalid email or password"}, {status: 401});
 
         return Response.json({success: true, id:existingUser.id, name:existingUser.name, role:existingUser.role}, {status:200})
 

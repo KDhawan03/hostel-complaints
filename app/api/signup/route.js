@@ -33,10 +33,20 @@ export async function POST(req) {
       if(existingUser.isVerified === true) {
         return Response.json({error: "Email already registered"}, {status: 409})
       }
+      const hashedPass = await bcrypt.hash(password, 10);
+      //if user comes back to signup then update the details
+      await prisma.user.update({
+        where: {id: existingUser.id}, 
+        data:{
+          name: name,
+          password: hashedPass
+        }
+      })
       const newOTP = await generateOTP(existingUser.id, "SIGNUP");
       //send otp via nodemailer
       console.log("otp for", email, "is", newOTP.code);
-      return Response.json({message: "otp sent to your mail"}, {status:200});
+      const id = existingUser.id;
+      return Response.json({message: "otp sent to your mail", id}, {status:200});
     }
     const hashedPass = await bcrypt.hash(password, 10);
     

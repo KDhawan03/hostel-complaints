@@ -23,7 +23,7 @@ const Verify = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/Verify", {
+      const res = await fetch("/api/verify", {
         method: "POST",
         headers:{},
         body: JSON.stringify({enteredOTP: otp, userId})
